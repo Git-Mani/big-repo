@@ -15,12 +15,13 @@ jobs:
       - name: Checkout Big Repo
         uses: actions/checkout@v3
 
-      - name: Checkout Intermediate Repo
+      - name: Checkout Intermediate Repo (Specific Branch)
         uses: actions/checkout@v3
         with:
-          repository: Git-Mani/intermediate-repo  # ✅ Intermediate repo URL
-          token: ${{secrets.GH_PAT}} # ✅ Use a stored GitHub token
-          path: intermediate-repo  # Clone intermediate repo into a folder
+          repository: Git-Mani/intermediate-repo  # ✅ Intermediate repo
+          token: ${{ secrets.GH_PAT }}  # ✅ Use GitHub Secret (DO NOT HARD-CODE TOKEN)
+          path: intermediate-repo  # Clone into 'intermediate-repo' folder
+          ref: main
 
       - name: Copy Source Folder to toTranslate
         run: |
