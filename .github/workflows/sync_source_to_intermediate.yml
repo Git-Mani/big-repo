@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: Git-Mani/intermediate-repo  # ✅ Intermediate repo URL
-          token: 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 # ✅ Use a stored GitHub token
+          token: ${{secrets.GH_PAT}} # ✅ Use a stored GitHub token
           path: intermediate-repo  # Clone intermediate repo into a folder
 
       - name: Copy Source Folder to toTranslate
