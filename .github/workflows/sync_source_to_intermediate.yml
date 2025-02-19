@@ -1,0 +1,38 @@
+name: Sync Source to Intermediate Repo
+
+on:
+  push:
+    paths:
+      - "source/**"  # 🔥 Runs only when files in the source folder change
+    branches:
+      - main  # Trigger only on changes in the main branch
+
+jobs:
+  sync-folder:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Big Repo
+        uses: actions/checkout@v3
+
+      - name: Checkout Intermediate Repo
+        uses: actions/checkout@v3
+        with:
+          repository: Git-Mani/intermediate-repo  # ✅ Intermediate repo URL
+          token: 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 # ✅ Use a stored GitHub token
+          path: intermediate-repo  # Clone intermediate repo into a folder
+
+      - name: Copy Source Folder to toTranslate
+        run: |
+          rm -rf intermediate-repo/toTranslate  # Remove old toTranslate folder
+          mkdir -p intermediate-repo/toTranslate  # Ensure path exists
+          cp -r source/* intermediate-repo/toTranslate/  # Copy new data
+
+      - name: Commit and Push Changes to Intermediate Repo
+        run: |
+          cd intermediate-repo
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions@github.com"
+          git add .
+          git commit -m "Sync source folder from big-repo to toTranslate"
+          git push origin main
